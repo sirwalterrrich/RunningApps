@@ -31,14 +31,6 @@ This web app provides estimated race finish times based on fitness data, while t
 
 ## Installation
 
-Install my-project with npm
-
-```bash
-  npm install my-project
-  cd my-project
-```
-
-
 To get the web app running on your local machine, follow these steps:
 
 **Prerequisites**
@@ -52,7 +44,7 @@ Clone the Repository
 Clone the project
 
 ```bash
-  git clone https://github.com/your-github-username/race-predictor-app.git
+  git clone https://github.com/sirwalterrrich/race-predictor-app.git
 
 ```
 
