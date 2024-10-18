@@ -1,0 +1,185 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #e0e0e0; /* Light background for contrast */
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #ffffff; /* White background for the main content */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Softer shadow for depth */
+}
+
+h1, h2, h3 {
+    color: #2c3e50; /* Dark blue-gray for headers */
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 2em;
+    margin-top: 20px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+}
+
+input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    background: #ccc; /* Gray background for range */
+    height: 8px; /* Height for the slider */
+    border-radius: 5px; /* Rounded edges */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px; /* Width of the thumb */
+    height: 20px; /* Height of the thumb */
+    background: #2980b9; /* Blue thumb color */
+    border-radius: 50%; /* Circular thumb */
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #2980b9;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
+}
+
+.notches {
+    position: relative;
+    height: 20px; /* Height of the notch line */
+    margin-top: -10px; /* Adjust to overlap the slider */
+}
+
+.notch {
+    position: absolute;
+    height: 10px; /* Height of the notch */
+    background-color: #2980b9; /* Color of the notch */
+    width: 2px; /* Width of the notch */
+    bottom: 0; /* Align to the bottom of the container */
+}
+
+#results {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f9f9f9; /* Light gray for results section */
+    border: 1px solid #ddd; /* Border around results */
+    border-radius: 5px; /* Slight rounding */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #2980b9; /* Blue header background */
+    color: white; /* White text for headers */
+}
+
+td {
+    background-color: #f0f0f0; /* Light gray for table cells */
+}
+
+.digital-display {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f9f9f9; /* Light gray for digital display */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.sound-button {
+    margin: 5px;
+    padding: 12px 20px;
+    background-color: #2980b9; /* Blue button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+.sound-button:hover {
+    background-color: #1c669c; /* Darker blue on hover */
+}
+
+button {
+    padding: 12px 20px;
+    background-color: #27ae60; /* Green button for calculations */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+button:hover {
+    background-color: #1e7a50; /* Darker green on hover */
+}
+
+
+/* Header styling */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.header-content h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.github-link {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.github-link:hover {
+    text-decoration: underline;
+}
+
+.github-logo {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}

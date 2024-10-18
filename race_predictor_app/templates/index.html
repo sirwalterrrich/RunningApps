@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Race Predictor and Pace Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Race Predictor & Pace Tracker</h1>
+            <a href="https://github.com/sirwalterrrich" target="_blank" class="github-link">
+                <img src="{{ url_for('static', filename='github-logo.png') }}" alt="GitHub Logo" class="github-logo">
+                Visit my GitHub
+            </a>
+        </div>
+    </header>
+    <div class="container">
+        <h1>Race Predictor and Pace Tracker</h1>
+        
+        <h2>Calculate Your Race Pace</h2>
+        <label for="distance">Distance (0 km to 50 km): <span id="distance-display">0 km</span></label>
+        <div class="slider-container">
+            <input type="range" id="distance" min="0" max="50" value="0" step="0.1" oninput="updateDistance()">
+            <div id="notches" class="notches"></div>
+        </div>
+
+        <label for="time">Time (0 mins to 6 hours): <span id="time-display">0 mins</span></label>
+        <input type="range" id="time" min="0" max="21600" value="0" step="1" oninput="updateTime()">
+
+        <button onclick="calculatePace()">Calculate Pace</button>
+
+        <div id="results">
+            <h3>Results</h3>
+            <p>Pace (min/km): <span id="pace-km"></span></p>
+            <p>Pace (min/mile): <span id="pace-miles"></span></p>
+            <p>Speed (miles/hour): <span id="speed"></span></p>
+
+            <h4>Predicted Times for Common Distances</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Distance</th>
+                        <th>Predicted Time (min)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>5k</td>
+                        <td id="pred-5k"></td>
+                    </tr>
+                    <tr>
+                        <td>10k</td>
+                        <td id="pred-10k"></td>
+                    </tr>
+                    <tr>
+                        <td>Half Marathon</td>
+                        <td id="pred-half-marathon"></td>
+                    </tr>
+                    <tr>
+                        <td>Marathon</td>
+                        <td id="pred-marathon"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="digital-display">
+            <h3>Stopwatch</h3>
+            <span id="stopwatch-display">00:00:00</span>
+            <button onclick="startStopwatch()">Start</button>
+            <button onclick="stopStopwatch()">Stop</button>
+            <button onclick="resetStopwatch()">Reset</button>
+
+            <h3>Countdown Timer</h3>
+            <label for="countdown-input">Set Timer (in seconds):</label>
+            <input type="number" id="countdown-input" min="1" value="60">
+            <button onclick="startCountdown()">Start Countdown</button>
+            <span id="countdown-display">00:00</span>
+        </div>
+
+        <div id="soundboard-section">
+            <h3>Soundboard</h3>
+            <button class="sound-button" onclick="playSound('sound1.mp3')">Sound 1</button>
+            <button class="sound-button" onclick="playSound('sound2.mp3')">Sound 2</button>
+            <button class="sound-button" onclick="playSound('sound3.mp3')">Sound 3</button>
+        </div>
+    </div>
+
+    <script>
+        function updateDistance() {
+            const distanceInput = document.getElementById('distance');
+            document.getElementById('distance-display').innerText = distanceInput.value + ' km';
+        }
+
+        function updateTime() {
+            const timeInput = document.getElementById('time');
+            const totalSeconds = timeInput.value;
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            document.getElementById('time-display').innerText = `${minutes} mins ${seconds} secs`;
+        }
+
+        function calculatePace() {
+            const distance = parseFloat(document.getElementById('distance').value);
+            const time = parseFloat(document.getElementById('time').value);
+            fetch('/calculate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ distance: distance, time: time })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('pace-km').innerText = data.pace_km;
+                document.getElementById('pace-miles').innerText = data.pace_miles;
+                document.getElementById('speed').innerText = data.speed;
+
+                document.getElementById('pred-5k').innerText = data.predictions['5k'].toFixed(2);
+                document.getElementById('pred-10k').innerText = data.predictions['10k'].toFixed(2);
+                document.getElementById('pred-half-marathon').innerText = data.predictions['half_marathon'].toFixed(2);
+                document.getElementById('pred-marathon').innerText = data.predictions['marathon'].toFixed(2);
+            });
+        }
+
+        function createNotches() {
+            const notchesContainer = document.getElementById('notches');
+            const commonDistances = [0, 5, 10, 21.1, 26.2, 50]; // km for 5k, 10k, Half Marathon, Marathon, and 50 km
+            const slider = document.getElementById('distance');
+
+            commonDistances.forEach(distance => {
+                const notch = document.createElement('div');
+                notch.className = 'notch';
+                // Calculate the position of the notch based on the slider's value
+                const position = (distance / slider.max) * 100; // Convert to percentage
+                notch.style.left = `calc(${position}% - 1px)`; // Center the notch
+                notchesContainer.appendChild(notch);
+            });
+        }
+
+        // Call createNotches when the window loads
+        window.onload = function() {
+            createNotches();
+            updateDistance(); // Initialize the displayed distance
+        };
+
+        let stopwatchInterval;
+        let stopwatchTime = 0;
+
+        function startStopwatch() {
+            clearInterval(stopwatchInterval);
+            stopwatchInterval = setInterval(() => {
+                stopwatchTime++;
+                const hours = Math.floor(stopwatchTime / 3600);
+                const minutes = Math.floor((stopwatchTime % 3600) / 60);
+                const seconds = stopwatchTime % 60;
+                document.getElementById('stopwatch-display').innerText = 
+                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function stopStopwatch() {
+            clearInterval(stopwatchInterval);
+        }
+
+        function resetStopwatch() {
+            stopStopwatch();
+            stopwatchTime = 0;
+            document.getElementById('stopwatch-display').innerText = '00:00:00';
+        }
+
+        function startCountdown() {
+            resetStopwatch(); // Reset stopwatch before starting countdown
+            const countdownInput = document.getElementById('countdown-input').value;
+            let countdownTime = parseInt(countdownInput, 10);
+
+            const countdownInterval = setInterval(() => {
+                if (countdownTime <= 0) {
+                    clearInterval(countdownInterval);
+                    alert('Countdown complete!');
+                } else {
+                    const minutes = Math.floor(countdownTime / 60);
+                    const seconds = countdownTime % 60;
+                    document.getElementById('countdown-display').innerText = 
+                        `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                    countdownTime--;
+                }
+            }, 1000);
+        }
+
+        function playSound(soundFile) {
+            const audio = new Audio(`static/${soundFile}`);
+            audio.play();
+        }
+    </script>
+</body>
+</html>
