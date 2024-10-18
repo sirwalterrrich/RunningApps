@@ -26,8 +26,8 @@ This web app provides estimated race finish times based on fitness data, while t
 **Digital Display Style:** Custom CSS for sports-watch-style UI elements
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
+![App Screenshot](https://raw.githubusercontent.com/sirwalterrrich/RunningApps/refs/heads/main/race_predictor_app/app_screenshot.png).
 
 ## Installation
 
