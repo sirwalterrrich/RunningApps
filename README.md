@@ -26,18 +26,10 @@ This web app provides estimated race finish times based on fitness data, while t
 **Digital Display Style:** Custom CSS for sports-watch-style UI elements
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
+![App Screenshot](https://raw.githubusercontent.com/sirwalterrrich/RunningApps/refs/heads/main/race_predictor_app/app_screenshot.png).
 
 ## Installation
-
-Install my-project with npm
-
-```bash
-  npm install my-project
-  cd my-project
-```
-
 
 To get the web app running on your local machine, follow these steps:
 
@@ -52,7 +44,7 @@ Clone the Repository
 Clone the project
 
 ```bash
-  git clone https://github.com/your-github-username/race-predictor-app.git
+  git clone https://github.com/sirwalterrrich/race-predictor-app.git
 
 ```
 
