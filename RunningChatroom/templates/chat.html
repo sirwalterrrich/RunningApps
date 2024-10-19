@@ -146,7 +146,15 @@
             messages.appendChild(messageElement);
             notificationSound.play();
         });
-
+        
+        // Handle incoming chat history
+        socket.on('chat_history', function(history) {
+            history.forEach(function(data) {
+            const messageElement = document.createElement('div');
+            messageElement.innerHTML = `<span class="username" style="color: ${getRandomColor()}">${data.username}</span>: <span>${data.msg}</span> <span class="timestamp">(${data.timestamp})</span>`;
+            messages.appendChild(messageElement);
+        });
+    });
         socket.on('user_list', function(users) {
             userList.innerHTML = ''; // Clear existing user list
             users.forEach(function(user) {

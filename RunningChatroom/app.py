@@ -15,6 +15,9 @@ users = {}
 connected_users = set()  # Set to store currently connected users
 chat_history = []  # List to store chat history
 
+# Maximum number of messages to keep
+MAX_MESSAGES = 250
+
 class User(UserMixin):
     def __init__(self, username):
         self.username = username
@@ -48,6 +51,8 @@ def handle_connect():
     connected_users.add(current_user.username)  # Add user to the connected users set
     emit('user_list', list(connected_users), broadcast=True)  # Send updated user list to all clients
     emit('message', {'msg': f'{current_user.username} has entered the chat!'}, broadcast=True)
+    # Send the last 250 messages to the newly connected user
+    emit('chat_history', chat_history)
 
 @socketio.on('disconnect')
 def handle_disconnect():
@@ -60,6 +65,17 @@ def handle_message(data):
     data['timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Add a timestamp
     chat_history.append(data)  # Save message to history
     emit('message', data, broadcast=True)
+    
+    username = data['username']
+    msg = data['msg']
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # Create message object
+    message = {'username': username, 'msg': msg, 'timestamp': timestamp}
+
+    # Append to chat history and maintain the limit
+    chat_history.append(message)
+    if len(chat_history) > MAX_MESSAGES:
+        chat_history.pop(0)  # Remove the oldest message
 
 if __name__ == '__main__':
     socketio.run(app)
