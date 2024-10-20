@@ -78,4 +78,5 @@ def handle_message(data):
         chat_history.pop(0)  # Remove the oldest message
 
 if __name__ == '__main__':
-    socketio.run(app)
+    #socketio.run(app)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
